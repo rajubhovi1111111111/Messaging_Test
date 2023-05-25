@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 15px;
+}
+</style>
+<title>Send message to DB</title>
+ 
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+
+<h1>Send message to DB</h1>
+
+<div style="padding:16px;">
+    <label>Message Box :</label>
+	<input type="text" id="msg" value="" placeholder="Please enter your message"></input>
+</div>
+	
+<button type="button" id="send" style="margin-right:20px;">Send the message</button> 
+<button type="button" id="retrive" style="margin-left:0px;">Retrieve the messages</button>
+<div> <p id="message"></p></div>
+<div class="col-lg-6">
+    <table class="table table-bordered table-striped">
+      <thead id="header">
+      </thead>
+      <tbody id="output">
+      </tbody>
+  </table>
+</div>
+
+<script type="text/javascript">
+    $("#send").click(function () {
+		
+	var message = $("#msg").val();
+
+    $.ajax({
+        type: "POST",
+        url: "/sendMessageToSB",
+        data: message,
+        contentType:"text/plain",
+        success: function(response) {
+            console.log(response.message);
+        },
+        failure:  function(response) {
+            console.log(response.message);
+        },
+        error: function(response) {
+            console.log(response.message);
+        }
+    });
+});
+
+$("#retrive").click(function () {
+        $.ajax({
+            type: "GET",
+            url: "/allDataFromDb",
+            dataType: "json",
+            success: function(responseArray) {
+                $("#header").html("<tr><th>Id</th><th>Message</th></tr>");
+                const responseHTML = responseArray.map((element) => {
+                    return "<tr>\
+                        <td>"+element.id+"</td>\
+                        <td>"+element.textMessage+"</td>\
+                        </tr>"
+                })
+                $("#output").html(responseHTML);
+            },
+            failure:  function(response) {
+                $("#message").html(response);
+            },
+            error: function(response) {
+                $("#message").html(response);
+            }
+        });
+});
+	
+</script>
+</body>
+</html>
