@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: connectsb-mesg-svc
+spec:
+  ports:
+  - name: port8080
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: connectsb-mesg
+  type: LoadBalancer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: connectsb-mesg
+  name: connectsb-mesg-sts
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: connectsb-mesg
+  template:
+    metadata:
+      labels:
+        app: connectsb-mesg
+      name: connectsb-mesg-sts
+    spec:
+      containers:
+      - env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        image: springbootjava.azurecr.io/connectsb:v1
+        imagePullPolicy: Always
+        name: connectsb-mesg
+        ports:
+        - containerPort: 8080
+        resources:
+          limits:
+            cpu: 0.3
+            memory: 500M
+          requests:
+            cpu: 0.2
+            memory: 100M
