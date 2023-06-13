@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: msgtestcicd
+  namespace: namespace-workflow-1685373539958
+spec:
+  type: LoadBalancer
+  selector:
+    app: msgtestcicd
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
