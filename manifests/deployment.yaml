@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: msgtestcicd
+  labels:
+    app: msgtestcicd
+  namespace: namespace-workflow-1685373539958
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: msgtestcicd
+  template:
+    metadata:
+      labels:
+        app: msgtestcicd
+    spec:
+      containers:
+        - name: msgtestcicd
+          image: acrworkflow1685431290173.azurecr.io/msgtestjava:latest
+          ports:
+            - containerPort: 8080
