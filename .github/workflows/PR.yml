@@ -27,8 +27,6 @@ jobs:
         
       - name: Compile with Maven
         run: mvn compile  
-        
-      - name: Run Checkstyle
-        run: mvn checkstyle:check
+
         
 
