@@ -1,6 +1,6 @@
 FROM maven:3-eclipse-temurin-8 as BUILD
 
-COPY . /usr/src/app
+COPY . /usr/src/app  
 RUN mvn --batch-mode -f /usr/src/app/pom.xml clean package
 
 FROM eclipse-temurin:8-jre
